@@ -3,15 +3,12 @@
 MinerU 2.5.4 with chemical recognition
 
 ## Install
-Install pytorch:
-```bash
-pip install torch torchvision
-```
-Install other dependencies:
+Install dependencies:
 ```bash
 git clone https://github.com/Www-pixelx/mineru-chem.git
 cd mineru-chem
-pip install -r requirements.txt
+pip install -e .[all]
+pip install albumentations==1.1.0
 ```
 
 ## Using
