@@ -128,9 +128,10 @@ class BatchAnalyze:
                 all_chem_coo_list.append(chem_coo_list)
             
             # 化学式识别
-            for chem_image_list, chem_coo_list, image_index in zip(
-                all_chem_image_list, all_chem_coo_list, range(len(np_images))
-            ):
+            for chem_image_list, chem_coo_list, image_index in tqdm(
+                zip(all_chem_image_list, all_chem_coo_list, range(len(np_images))),
+                desc="ChemRec Predict", total=len(np_images)
+                ):
                 if(len(chem_image_list) == 0):
                     continue
                 images = pad_images(chem_image_list)

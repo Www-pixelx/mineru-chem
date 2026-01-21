@@ -12,7 +12,7 @@ pip install albumentations==1.1.0
 ```
 
 ## Using
-If your device meets the GPU acceleration requirements in the table above, you can use a simple command line for document parsing:
+If your device meets the GPU acceleration requirements, you can use a simple command line for document parsing:
 ```bash
 mineru -p <input_path> -o <output_path>
 ```

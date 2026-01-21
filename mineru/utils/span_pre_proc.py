@@ -99,13 +99,26 @@ def remove_overlaps_min_spans(spans):
                 if span1 in dropped_spans or span2 in dropped_spans:
                     continue
                 else:
-                    if (
-                        span1.get('type') == ContentType.CHEMICAL_FORMULA
-                        or span2.get('type') == ContentType.CHEMICAL_FORMULA
-                    ):
-                        continue
                     overlap_box = get_minbox_if_overlap_by_ratio(span1['bbox'], span2['bbox'], 0.65)
                     if overlap_box is not None:
+                        span1_is_chem = span1.get('type') == ContentType.CHEMICAL_FORMULA
+                        span2_is_chem = span2.get('type') == ContentType.CHEMICAL_FORMULA
+
+                        if span1_is_chem or span2_is_chem:
+                            chem_span = span1 if span1_is_chem else span2
+                            other_span = span2 if span1_is_chem else span1
+
+                            if overlap_box == chem_span['bbox']:
+                                continue
+
+                            if overlap_box == other_span['bbox']:
+                                if other_span.get('type') == ContentType.IMAGE:
+                                    continue
+                                span_need_remove = other_span
+                                if span_need_remove not in dropped_spans:
+                                    dropped_spans.append(span_need_remove)
+                            continue
+
                         span_need_remove = next((span for span in spans if span['bbox'] == overlap_box), None)
                         if span_need_remove is not None and span_need_remove not in dropped_spans:
                             dropped_spans.append(span_need_remove)
