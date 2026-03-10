@@ -1,5 +1,8 @@
 # Copyright (c) Opendatalab. All rights reserved.
 import os
+import sys
+import time
+import warnings
 import click
 from pathlib import Path
 from loguru import logger
@@ -155,6 +158,10 @@ def main(
         device_mode, virtual_vram, model_source, **kwargs
 ):
 
+    warnings.filterwarnings("ignore")
+    logger.remove()
+    logger.add(sys.stderr, level="INFO", filter=lambda record: record["level"].name != "WARNING")
+
     kwargs.update(arg_parse(ctx))
 
     if not backend.endswith('-client'):
@@ -181,6 +188,7 @@ def main(
     os.makedirs(output_dir, exist_ok=True)
 
     def parse_doc(path_list: list[Path]):
+        start_time = time.perf_counter()
         try:
             file_name_list = []
             pdf_bytes_list = []
@@ -208,6 +216,9 @@ def main(
             )
         except Exception as e:
             logger.exception(e)
+        finally:
+            elapsed = time.perf_counter() - start_time
+            print(f"Parsing completed. Documents: {len(path_list)}. Total time: {elapsed:.2f}s")
 
     if os.path.isdir(input_path):
         doc_path_list = []
