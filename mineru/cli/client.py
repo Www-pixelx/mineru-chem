@@ -114,8 +114,8 @@ from .common import do_parse, read_fn, pdf_suffixes, image_suffixes
     '--chem',
     'chem_enable',
     type=bool,
-    help='Enable chemical formula parsing. Default is False. Adapted only for the case where the backend is set to "pipeline".',
-    default=False,
+    help='Enable chemical formula parsing. Default is True. Adapted only for the case where the backend is set to "pipeline".',
+    default=True,
 )
 @click.option(
     '-t',
